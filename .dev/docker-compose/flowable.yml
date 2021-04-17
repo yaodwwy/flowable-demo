@@ -1,0 +1,51 @@
+version: '3.6'
+
+services:
+
+  flowable-ui:
+    image: flowable/flowable-ui
+    restart: always
+    container_name: flowable-ui
+    hostname: flowable-ui
+    ports:
+      - 8080:8080
+    environment:
+      TZ: "Asia/Shanghai"
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.h2.Driver
+      SPRING_DATASOURCE_URL: jdbc:h2:~/flowable-flowfest-db/db;AUTO_SERVER=TRUE;AUTO_SERVER_PORT=9091;DB_CLOSE_DELAY=-1
+      SPRING_DATASOURCE_USERNAME: flowable
+      SPRING_DATASOURCE_PASSWORD: flowable
+      FLOWABLE_COMMON_APP_IDM-URL: http://localhost:8080/flowable-idm
+      FLOWABLE_COMMON_APP_IDM-REDIRECT-URL: http://localhost:8080/flowable-idm
+      FLOWABLE_ACTIVITY-FONT-NAME: "黑体"
+      FLOWABLE_ANNOTATION-FONT-NAME: "黑体"
+      FLOWABLE_LABEL-FONT-NAME: "黑体"
+      FLOWABLE_MAIL_SERVER_HOST: not-set
+      FLOWABLE_MAIL_SERVER_DEFAULT-FROM: not-set
+      FLOWABLE_MAIL_SERVER_USERNAME: not-set
+      FLOWABLE_MAIL_SERVER_PASSWORD: not-set
+      FLOWABLE_MAIL_SERVER_SSL-PORT: 465
+      FLOWABLE_MAIL_SERVER_USE-SSL: "true"
+
+  flowable-rest:
+    image: flowable/flowable-rest
+    restart: always
+    container_name: flowable-rest
+    hostname: flowable-rest
+    ports:
+      - 9090:8080
+    environment:
+      TZ: "Asia/Shanghai"
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.h2.Driver
+      SPRING_DATASOURCE_URL: jdbc:h2:~/flowable-flowfest-db/db;AUTO_SERVER=TRUE;AUTO_SERVER_PORT=9091;DB_CLOSE_DELAY=-1
+      SPRING_DATASOURCE_USERNAME: flowable
+      SPRING_DATASOURCE_PASSWORD: flowable
+      FLOWABLE_REST_APP_ADMIN_USER-ID: rest-admin
+      FLOWABLE_REST_APP_ADMIN_PASSWORD: test
+      FLOWABLE_REST_APP_ADMIN_FIRST-NAME: Rest
+      FLOWABLE_REST_APP_ADMIN_LAST-NAME: Admin
+      FLOWABLE_ACTIVITY-FONT-NAME: "黑体"
+      FLOWABLE_ANNOTATION-FONT-NAME: "黑体"
+      FLOWABLE_LABEL-FONT-NAME:  "黑体"
