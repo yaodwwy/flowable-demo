@@ -1,0 +1,26 @@
+<definitions xmlns="http://www.omg.org/spec/DMN/20180521/MODEL/" id="definition_ad78c506-9f5d-11eb-aceb-0242ac120009" name="dmn" namespace="http://www.flowable.org/dmn">
+  <decision id="dmn" name="dmn">
+    <decisionTable id="decisionTable_ad78c506-9f5d-11eb-aceb-0242ac120009" hitPolicy="FIRST">
+      <input>
+        <inputExpression id="inputExpression_1" typeRef="string"></inputExpression>
+      </input>
+      <output id="outputExpression_2" typeRef="string"></output>
+      <rule>
+        <inputEntry id="inputEntry_1_1">
+          <text><![CDATA[== a]]></text>
+        </inputEntry>
+        <outputEntry id="outputEntry_2_1">
+          <text><![CDATA[b]]></text>
+        </outputEntry>
+      </rule>
+      <rule>
+        <inputEntry id="inputEntry_1_2">
+          <text><![CDATA[!= a]]></text>
+        </inputEntry>
+        <outputEntry id="outputEntry_2_2">
+          <text><![CDATA[c]]></text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

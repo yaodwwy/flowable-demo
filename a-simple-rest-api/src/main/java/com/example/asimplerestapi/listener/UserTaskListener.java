@@ -7,12 +7,14 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class StartTaskListener implements TaskListener {
+public class UserTaskListener implements TaskListener {
 
     private static final long serialVersionUID = -8885457726836630603L;
 
     @Override
     public void notify(DelegateTask delegateTask) {
+        log.info("Class Name: {}",this.getClass().getName());
+
         String name = delegateTask.getName();
         log.info("任务: {}", name);
     }
