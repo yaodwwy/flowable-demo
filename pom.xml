@@ -10,7 +10,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>a-resources</module>
         <module>a-simple-rest-api</module>
+        <module>a-simple-standalone</module>
     </modules>
 
     <properties>
@@ -43,6 +45,11 @@
             <dependency>
                 <groupId>org.flowable</groupId>
                 <artifactId>flowable-rest</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-bpmn-layout</artifactId>
                 <version>${flowable.version}</version>
             </dependency>
             <dependency>

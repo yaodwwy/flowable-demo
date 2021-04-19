@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:flowable="http://flowable.org/bpmn"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.flowable.org/processdef">
+  <process id="_4流程操作.bpmn20.xml" name="service_timer_suspend_exception" isExecutable="true">
+    <documentation>
+      工作的产生与管理
+      异步任务
+      定时事件
+      暂停的工作
+      无法执行的工作
+    </documentation>
+    <startEvent id="startEvent1"/>
+    <endEvent id="endEvent"/>
+    <serviceTask id="MyJavaDelegateServiceTask" name="服务任务默认处理"
+                 flowable:async="true" flowable:class="org.flowable.delegate.MyJavaDelegate"/>
+    <intermediateCatchEvent id="intermediateCatchEventID">
+      <timerEventDefinition>
+        <timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <userTask id="userTaskID" name="用户任务">
+    </userTask>
+    <serviceTask id="serviceTaskID" name="服务任务抛异常"
+                 flowable:async="true" flowable:class="org.flowable.delegate.MyExceptionJavaDelegate"/>
+    <sequenceFlow id="SequenceFlow_0rq55x7" sourceRef="startEvent1" targetRef="MyJavaDelegateServiceTask" />
+    <sequenceFlow id="SequenceFlow_0dlkny9" sourceRef="MyJavaDelegateServiceTask" targetRef="intermediateCatchEventID" />
+    <sequenceFlow id="SequenceFlow_0r6xdnq" sourceRef="intermediateCatchEventID" targetRef="serviceTaskID" />
+    <sequenceFlow id="SequenceFlow_1ykjkhi" sourceRef="serviceTaskID" targetRef="userTaskID" />
+    <sequenceFlow id="SequenceFlow_04469uh" sourceRef="userTaskID" targetRef="endEvent" />
+  </process>
+</definitions>
