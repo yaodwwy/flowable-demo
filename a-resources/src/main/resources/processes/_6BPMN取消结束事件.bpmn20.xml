@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_6BPMN取消结束事件.bpmn20.xml" name="My process" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <transaction id="transaction1" name="Transaction">
+      <startEvent id="startevent2" name="Start"></startEvent>
+      <endEvent id="cancelendevent1" name="CancelEnd">
+        <cancelEventDefinition></cancelEventDefinition>
+      </endEvent>
+      <userTask id="usertask1" name="Tran Task"></userTask>
+      <serviceTask isForCompensation="true" id="servicetask1" name="Compensation" activiti:class="cn.adbyte.activiti.org.flowable.delegate.CompenstaionDelegate">
+      </serviceTask>
+      <boundaryEvent id="boundarycompensation1" name="Compensate" attachedToRef="usertask1" cancelActivity="true">
+        <compensateEventDefinition></compensateEventDefinition>
+      </boundaryEvent>
+      <sequenceFlow id="flow3" sourceRef="startevent2" targetRef="usertask1"></sequenceFlow>
+      <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="cancelendevent1"></sequenceFlow>
+    </transaction>
+    <boundaryEvent id="boundarycancel1" name="Cancel" attachedToRef="transaction1" cancelActivity="true">
+      <cancelEventDefinition></cancelEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="usertask2" name="Cancle Task"></userTask>
+    <sequenceFlow id="flow2" sourceRef="transaction1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="boundarycancel1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="startevent1" targetRef="transaction1"></sequenceFlow>
+    <association id="association1" sourceRef="boundarycompensation1" targetRef="servicetask1" associationDirection="None"></association>
+  </process>
+</definitions>

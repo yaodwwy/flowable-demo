@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1539166783937" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="_6BPMN定时器开始事件.bpmn20.xml" isClosed="false" isExecutable="true" name="My process" processType="None">
+    <endEvent id="endevent1" name="End"/>
+    <userTask activiti:exclusive="true" id="usertask1" name="User Task"/>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"/>
+    <startEvent id="timerstartevent1" name="Timer start">
+      <timerEventDefinition id="timerstartevent1_ED_1">
+        <timeCycle><![CDATA[0/30 * * * * ?]]></timeCycle>
+      </timerEventDefinition>
+    </startEvent>
+    <sequenceFlow id="flow3" sourceRef="timerstartevent1" targetRef="usertask1"/>
+  </process>
+</definitions>

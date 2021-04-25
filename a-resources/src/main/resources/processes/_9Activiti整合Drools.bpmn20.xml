@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+    typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
+    targetNamespace="http://www.activiti.org/test">
+    <process id="loanrequestWithRules" name="My process" isExecutable="true">
+        <startEvent id="startevent1" name="Start"></startEvent>
+        <userTask id="usertask1" name="录入销售信息"></userTask>
+        <serviceTask id="servicetask1" name="输出结果" activiti:class="cn.adbyte.activiti.org.flowable.delegate.VariableDelegate"></serviceTask>
+
+        <businessRuleTask id="ID" name="名称" activiti:class="org.flowable.delegate.BusinessRuleTaskDelegate"
+                          activiti:ruleVariablesInput="${member}"
+                          activiti:rules="ACTwithDrl1,ACTwithDrl2"
+                          activiti:resultVariable="members"></businessRuleTask>
+
+        <businessRuleTask id="businessruletask1" name="匹配销售规则"
+            activiti:ruleVariablesInput="${member}"
+            activiti:resultVariable="members"></businessRuleTask>
+        <endEvent id="endevent1" name="End"></endEvent>
+        <sequenceFlow id="flow1" sourceRef="startevent1"
+            targetRef="usertask1"></sequenceFlow>
+        <sequenceFlow id="flow2" sourceRef="usertask1"
+            targetRef="businessruletask1"></sequenceFlow>
+        <sequenceFlow id="flow3" sourceRef="businessruletask1"
+            targetRef="servicetask1"></sequenceFlow>
+        <sequenceFlow id="flow4" sourceRef="servicetask1"
+            targetRef="endevent1"></sequenceFlow>
+    </process>
+</definitions>

@@ -7,8 +7,6 @@ import org.flowable.bpmn.model.*;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -33,7 +31,7 @@ public class _1部署Test extends _0BaseTests{
 
     @Test
     public void 部署流程文件() throws IOException {
-        ProcessDefinition deploy = factory.deploy("processes/_1部署流程.bpmn20.xml", "_1部署流程");
+        ProcessDefinition deploy = flowable.deploy("processes/_1部署流程.bpmn20.xml", "_1部署流程");
         Assert.notNull(deploy, "null?");
         log.info("version: {}", deploy.getVersion());
     }
@@ -61,7 +59,7 @@ public class _1部署Test extends _0BaseTests{
         new BpmnAutoLayout(model).execute();
 
         // 3. 把BpmnModel对象部署到引擎
-        Deployment deploy = factory.buildBpmn("dynamic-model", model, "my-process", true);
+        Deployment deploy = flowable.buildBpmn("dynamic-model", model, "my-process", true);
         log.info(deploy.getId() + ", " + deploy.getName());
 
     }

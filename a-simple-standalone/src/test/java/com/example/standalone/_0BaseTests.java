@@ -1,19 +1,15 @@
 package com.example.standalone;
 
-import lombok.extern.slf4j.Slf4j;
-import org.flowable.engine.IdentityService;
-import org.flowable.engine.RepositoryService;
-import org.flowable.engine.RuntimeService;
-import org.flowable.engine.TaskService;
+import org.flowable.engine.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class _0BaseTests {
 
     @Autowired
-    FlowableFactory factory;
+    FlowableUtils flowable;
 
     @Autowired
     IdentityService identityService;
@@ -22,14 +18,19 @@ class _0BaseTests {
     RuntimeService runtimeService;
 
     @Autowired
-    FlowableFactory ActivitiFactory;
-
-    @Autowired
     TaskService taskService;
 
+    @Autowired
+    FormService formService;
 
     @Autowired
     RepositoryService repositoryService;
+
+    @Autowired
+    ManagementService managementService;
+
+    @Autowired
+    HistoryService historyService;
 
     @Test
     void contextLoads() {

@@ -6,6 +6,7 @@ import org.flowable.common.engine.api.delegate.event.FlowableEventListener;
 import org.flowable.common.engine.impl.history.HistoryLevel;
 import org.flowable.engine.*;
 import org.flowable.engine.impl.cfg.StandaloneProcessEngineConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,9 @@ public class FlowableStandaloneConfig {
     private final static String DATASOURCE_USERNAME = "flowable";
     private final static String DATASOURCE_PASSWORD = "flowable";
     private final static String DATASOURCE_DRIVER = "org.h2.Driver";
+
+    @Autowired
+    private ProcessEngine processEngine;
 
     @Bean
     public static ProcessEngine processEngine() {
@@ -79,42 +83,42 @@ public class FlowableStandaloneConfig {
     // 存储服务
     @Bean
     public RepositoryService repositoryService() {
-        return processEngine().getRepositoryService();
+        return processEngine.getRepositoryService();
     }
 
     // 运行时服务
     @Bean
     public RuntimeService runtimeService() {
-        return processEngine().getRuntimeService();
+        return processEngine.getRuntimeService();
     }
 
     // 任务服务
     @Bean
     public TaskService taskService() {
-        return processEngine().getTaskService();
+        return processEngine.getTaskService();
     }
 
     // 用户身份服务
     @Bean
     public IdentityService identityService() {
-        return processEngine().getIdentityService();
+        return processEngine.getIdentityService();
     }
 
     // 管理服务
     @Bean
     public ManagementService managementService() {
-        return processEngine().getManagementService();
+        return processEngine.getManagementService();
     }
 
     // 表单服务
     @Bean
     public FormService formService() {
-        return processEngine().getFormService();
+        return processEngine.getFormService();
     }
 
     // 历史记录
     @Bean
     public HistoryService historyService() {
-        return processEngine().getHistoryService();
+        return processEngine.getHistoryService();
     }
 }

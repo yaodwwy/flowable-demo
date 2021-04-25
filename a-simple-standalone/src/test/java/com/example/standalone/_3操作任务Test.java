@@ -24,7 +24,7 @@ import java.util.UUID;
  * 分为4中状态：未签收/待办理、已签收/办理中、运行中/办理中、已完成/已办结
  */
 @Slf4j
-public class _3任务Test extends _0BaseTests {
+public class _3操作任务Test extends _0BaseTests {
 
     private String random = UUID.randomUUID().toString().substring(0, 3);
 
@@ -58,17 +58,15 @@ public class _3任务Test extends _0BaseTests {
         taskService.addCandidateGroup(taskId, groupID);
 
         // 待签收/待办理
-        List<Task> tasks = taskService.createTaskQuery().taskCandidateUser(userId).list();
         log.info(userId + "这个用户有权限处理的任务有： ");
-        Print.tasks(tasks);
+        taskService.createTaskQuery().taskCandidateUser(userId).list().parallelStream().forEach(Print::out);
 
         // 签收任务
         taskService.claim(taskId, userId);
 
         //按用户查询指派、签收的任务 用户待办
-        tasks = taskService.createTaskQuery().taskAssignee(userId).list();
         log.info(userId + "这个用户有待办的任务有:");
-        Print.tasks(tasks);
+        taskService.createTaskQuery().taskAssignee(userId).list().parallelStream().forEach(Print::out);
 
         // 签收人是持有人
         taskService.setOwner(taskId, userId);
@@ -76,12 +74,10 @@ public class _3任务Test extends _0BaseTests {
 
         //委托
         log.info("委托之前：");
-        List<Task> list = taskService.createTaskQuery().taskOwner(userId).list();
-        Print.tasks(list);
+        taskService.createTaskQuery().taskOwner(userId).list().parallelStream().forEach(Print::out);
         taskService.delegateTask(task.getId(), "adam2");
         log.info("委托之后：");
-        list = taskService.createTaskQuery().taskOwner(userId).list();
-        Print.tasks(list);
+        taskService.createTaskQuery().taskOwner(userId).list().parallelStream().forEach(Print::out);
         //结果：owner是userId，assignee是adam2
     }
 
@@ -105,7 +101,7 @@ public class _3任务Test extends _0BaseTests {
         Assert.notNull(pr, "null ? ");
 
         //任务Local变量
-        ProcessInstance pi = factory.deployAndStart("processes/_3任务变量.bpmn20.xml", "_3任务变量");
+        ProcessInstance pi = flowable.deployAndStart("processes/_3任务变量.bpmn20.xml", "_3任务变量");
         task = taskService.createTaskQuery().processInstanceId(pi.getId()).singleResult();
         //dataObject 流程配置文件变量
         String var = taskService.getVariable(task.getId(), "var", String.class);
@@ -122,9 +118,9 @@ public class _3任务Test extends _0BaseTests {
 
     @Test
     public void 参数作用域() {
-        ProcessInstance processInstance = ActivitiFactory.deployAndStart("processes/_3任务参数作用域.bpmn20.xml", "_3任务参数作用域");
+        ProcessInstance processInstance = flowable.deployAndStart("processes/_3任务参数作用域.bpmn20.xml", "_3任务参数作用域");
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
-        Print.tasks(tasks);
+        tasks.parallelStream().forEach(Print::out);
         for (Task task : tasks) {
             ExecutionQuery executionQuery = runtimeService.createExecutionQuery();
             Execution exe = executionQuery.executionId(task.getExecutionId()).singleResult();
@@ -142,14 +138,10 @@ public class _3任务Test extends _0BaseTests {
         }
 
         Task taskC = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
-        ArrayList<Task> taskArrayList = new ArrayList<>();
-        taskArrayList.add(taskC);
-        Print.tasks(taskArrayList);
-        log.info("taskVarA 的参数：" + String.valueOf(runtimeService.getVariable(processInstance.getId(), "taskVarA")));
-        log.info("taskVarB 的参数: " + String.valueOf(runtimeService.getVariable(processInstance.getId(), "taskVarB")));
+        Print.out(taskC);
+        log.info("taskVarA 的参数：" + runtimeService.getVariable(processInstance.getId(), "taskVarA"));
+        log.info("taskVarB 的参数: " + runtimeService.getVariable(processInstance.getId(), "taskVarB"));
         log.info("流程实例: ");
-        ArrayList<ProcessInstance> ProcessInstanceList = new ArrayList<>();
-        ProcessInstanceList.add(processInstance);
-        Print.instances(ProcessInstanceList);
+        Print.out(processInstance);
     }
 }

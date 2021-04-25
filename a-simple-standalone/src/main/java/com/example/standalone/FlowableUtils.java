@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.BpmnModel;
+import org.flowable.common.engine.api.FlowableException;
 import org.flowable.engine.*;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.DeploymentBuilder;
@@ -30,7 +31,7 @@ import java.util.zip.ZipInputStream;
  */
 @Slf4j
 @Component
-public class FlowableFactory {
+public class FlowableUtils {
 
     private final String GEN_PATH = "src/main/resources/generated/";
 
@@ -45,7 +46,7 @@ public class FlowableFactory {
     // 管理服务
     private final ManagementService managementService;
 
-    public FlowableFactory(ProcessEngine processEngine, RepositoryService repositoryService, RuntimeService runtimeService, TaskService taskService, ManagementService managementService) {
+    public FlowableUtils(ProcessEngine processEngine, RepositoryService repositoryService, RuntimeService runtimeService, TaskService taskService, ManagementService managementService) {
         this.processEngine = processEngine;
         this.repositoryService = repositoryService;
         this.runtimeService = runtimeService;
@@ -61,7 +62,7 @@ public class FlowableFactory {
      */
     public ProcessDefinition deploy(String file, String name) {
         if (StringUtils.isAnyBlank(file)) {
-            throw new RuntimeException("文件不能为空！");
+            throw new FlowableException("文件不能为空！");
         }
         DeploymentBuilder builder = repositoryService.createDeployment();
         builder.addClasspathResource(file);
@@ -127,8 +128,7 @@ public class FlowableFactory {
         log.info("当前流程实例id：" + pi.getId() + ", BusinessKey:" + pi.getBusinessKey() + "正在获取任务 ...");
 
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(pi.getId()).list();
-
-        Print.tasks(tasks);
+        tasks.parallelStream().forEach(Print::out);
         for (Task task : tasks) {
             taskService.complete(task.getId(), params);
             log.info("当前任务：[{}] 任务已完成！", task);

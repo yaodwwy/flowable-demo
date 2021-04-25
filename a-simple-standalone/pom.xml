@@ -20,15 +20,31 @@
         <java.version>11</java.version>
     </properties>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.kie/kie-api -->
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-api</artifactId>
+            <version>7.52.0.Final</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-compiler</artifactId>
+            <version>7.52.0.Final</version>
+        </dependency>
+
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>a-resources</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -37,9 +53,10 @@
             <groupId>org.flowable</groupId>
             <artifactId>flowable-bpmn-layout</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.flowable</groupId>
-            <artifactId>flowable-rest</artifactId>
+            <artifactId>flowable-engine</artifactId>
         </dependency>
 
         <dependency>

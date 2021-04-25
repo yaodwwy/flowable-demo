@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+
+  <error id="mainError" errorCode="errorCode 400"></error>
+  <process id="_6BPMN错误开始事件.bpmn20.xml" name="My process" isExecutable="true">
+    <subProcess id="eventsubprocess1" name="Event sub Process" triggeredByEvent="true">
+      <startEvent id="errorstartevent1" name="Error start" activiti:isInterrupting="false">
+        <errorEventDefinition errorRef="mainError"></errorEventDefinition>
+      </startEvent>
+      <serviceTask id="servicetask1" name="Report" activiti:class="cn.adbyte.activiti.org.flowable.delegate.SubEventDelegate"></serviceTask>
+      <endEvent id="endevent1" name="End"></endEvent>
+      <sequenceFlow id="flow3" sourceRef="errorstartevent1" targetRef="servicetask1"></sequenceFlow>
+      <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
+    </subProcess>
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <serviceTask id="servicetask2" name="Count People" activiti:class="cn.adbyte.activiti.org.flowable.delegate.ThrowDelegate"></serviceTask>
+    <endEvent id="endevent2" name="End">
+    </endEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
+  </process>
+</definitions>

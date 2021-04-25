@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+    typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
+    targetNamespace="http://www.activiti.org/test">
+    <process id="_6BPMN中间抛出事件补偿.bpmn20.xml" name="My process" isExecutable="true">
+        <startEvent id="startevent1" name="Start"></startEvent>
+        <serviceTask id="servicetask1" name="工商银行扣款"
+            activiti:class="cn.adbyte.activiti.org.flowable.delegate._6中间抛出事件补偿.IcbcReduceDelegate"></serviceTask>
+        <serviceTask id="servicetask2" name="农业银行加款"
+            activiti:class="cn.adbyte.activiti.org.flowable.delegate._6中间抛出事件补偿.AbcAddDelegate"></serviceTask>
+        <intermediateThrowEvent id="compensationintermediatethrowevent1"
+            name="CompensationThrowingEvent">
+            <extensionElements>
+                <activiti:executionListener event="start" class="cn.adbyte.activiti.org.flowable.delegate._6中间抛出事件补偿.MyExecutionListener">
+                </activiti:executionListener>
+            </extensionElements>
+            <compensateEventDefinition></compensateEventDefinition>
+        </intermediateThrowEvent>
+        <endEvent id="endevent1" name="End"></endEvent>
+        <sequenceFlow id="flow1" sourceRef="startevent1"
+            targetRef="servicetask1"></sequenceFlow>
+        <sequenceFlow id="flow2" sourceRef="servicetask1"
+            targetRef="servicetask2"></sequenceFlow>
+        <sequenceFlow id="flow3" sourceRef="servicetask2"
+            targetRef="compensationintermediatethrowevent1"></sequenceFlow>
+        <sequenceFlow id="flow4"
+            sourceRef="compensationintermediatethrowevent1" targetRef="endevent1"></sequenceFlow>
+        <boundaryEvent id="boundarycompensation1" name="Compensate"
+            attachedToRef="servicetask1" cancelActivity="true">
+            <compensateEventDefinition></compensateEventDefinition>
+        </boundaryEvent>
+        <boundaryEvent id="boundarycompensation2" name="Compensate"
+            attachedToRef="servicetask2" cancelActivity="true">
+            <compensateEventDefinition></compensateEventDefinition>
+        </boundaryEvent>
+        <serviceTask id="servicetask3" name="工商银行处理补偿"
+            activiti:class="cn.adbyte.activiti.org.flowable.delegate._6中间抛出事件补偿.IcbcAddDelegate"
+            isForCompensation="true"></serviceTask>
+        <serviceTask id="servicetask4" name="农业银行处理补偿"
+                     activiti:class="cn.adbyte.activiti.org.flowable.delegate._6中间抛出事件补偿.AbcReduceDelegate" isForCompensation="true"></serviceTask>
+        <association id="association1" sourceRef="boundarycompensation1"
+            targetRef="servicetask3"></association>
+        <association id="association2" sourceRef="boundarycompensation2"
+            targetRef="servicetask4"></association>
+    </process>
+</definitions>
