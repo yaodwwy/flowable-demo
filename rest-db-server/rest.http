@@ -1,7 +1,12 @@
 ###
-POST {{host}}/runtime/process-instances
+GET {{host}}/repository/process-definitions
+Content-Type: application/json
+
+
+###
+GET {{host}}/runtime/process-instances
 Content-Type: application/json
 
 {
-  "processDefinitionId": "a"
+  "processDefinitionKey": "a"
 }
