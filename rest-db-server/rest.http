@@ -1,0 +1,7 @@
+###
+POST {{host}}/runtime/process-instances
+Content-Type: application/json
+
+{
+  "processDefinitionId": "a"
+}

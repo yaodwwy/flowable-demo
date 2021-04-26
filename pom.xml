@@ -10,9 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>a-resources</module>
-        <module>a-simple-rest-api</module>
-        <module>a-simple-standalone</module>
+        <module>domain</module>
+        <module>resources</module>
+        <module>rest-db-server</module>
+        <module>standalone</module>
     </modules>
 
     <properties>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="service-task-test" name="服务任务测试" isExecutable="true">
+    <documentation>工作的产生与管理
+      异步任务
+      定时事件
+      暂停的工作
+      无法执行的工作</documentation>
+    <startEvent id="startEvent1" flowable:formFieldValidation="true"></startEvent>
+    <endEvent id="endEvent"></endEvent>
+    <serviceTask id="MyJavaDelegateServiceTask" name="服务任务默认处理" flowable:async="true" flowable:delegateExpression="${simpleDelegate}"></serviceTask>
+    <intermediateCatchEvent id="intermediateCatchEventID" name="等待3S">
+      <timerEventDefinition>
+        <timeDuration>PT3S</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <userTask id="userTaskID" name="用户任务" flowable:formFieldValidation="true"></userTask>
+    <serviceTask id="serviceTaskID" name="服务任务抛异常" flowable:async="true" flowable:delegateExpression="${exceptionThrowDelegate}"></serviceTask>
+    <sequenceFlow id="SequenceFlow_04469uh" sourceRef="userTaskID" targetRef="endEvent"></sequenceFlow>
+    <sequenceFlow id="sid-EAB368C2-5976-4F96-A4AA-9EA62425F6D0" sourceRef="startEvent1" targetRef="sid-DF0FA583-DF0F-46B5-ACB2-9C28E17054F7"></sequenceFlow>
+    <parallelGateway id="sid-DF0FA583-DF0F-46B5-ACB2-9C28E17054F7"></parallelGateway>
+    <sequenceFlow id="sid-74FCB971-7FCC-4458-82CE-2EBDB0AB4C89" sourceRef="sid-DF0FA583-DF0F-46B5-ACB2-9C28E17054F7" targetRef="intermediateCatchEventID"></sequenceFlow>
+    <sequenceFlow id="sid-88A18F7C-2D3D-4177-A69F-112E2FC14AE1" sourceRef="sid-DF0FA583-DF0F-46B5-ACB2-9C28E17054F7" targetRef="MyJavaDelegateServiceTask"></sequenceFlow>
+    <sequenceFlow id="sid-F42C5949-C54D-4FDE-93EA-8BD6F41223E0" sourceRef="intermediateCatchEventID" targetRef="serviceTaskID"></sequenceFlow>
+    <parallelGateway id="sid-B4883664-C4D8-41D1-8D2B-E16DF26B2EFE"></parallelGateway>
+    <sequenceFlow id="sid-D48C3863-93E2-4BC8-BF4C-541A55A48FD1" sourceRef="MyJavaDelegateServiceTask" targetRef="sid-B4883664-C4D8-41D1-8D2B-E16DF26B2EFE"></sequenceFlow>
+    <sequenceFlow id="sid-74107ED7-BC1C-4677-98BC-863290C026FE" sourceRef="serviceTaskID" targetRef="sid-B4883664-C4D8-41D1-8D2B-E16DF26B2EFE"></sequenceFlow>
+    <sequenceFlow id="sid-2ECFAADD-8B13-4308-8EAF-6DC780929D62" sourceRef="sid-B4883664-C4D8-41D1-8D2B-E16DF26B2EFE" targetRef="userTaskID"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_service-task-test">
+    <bpmndi:BPMNPlane bpmnElement="service-task-test" id="BPMNPlane_service-task-test">
+      <bpmndi:BPMNShape bpmnElement="startEvent1" id="BPMNShape_startEvent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="15.0" y="75.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEvent" id="BPMNShape_endEvent">
+        <omgdc:Bounds height="28.0" width="28.0" x="615.0" y="75.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="MyJavaDelegateServiceTask" id="BPMNShape_MyJavaDelegateServiceTask">
+        <omgdc:Bounds height="60.0" width="100.0" x="225.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="intermediateCatchEventID" id="BPMNShape_intermediateCatchEventID">
+        <omgdc:Bounds height="31.0" width="31.0" x="150.0" y="14.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTaskID" id="BPMNShape_userTaskID">
+        <omgdc:Bounds height="60.0" width="100.0" x="465.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="serviceTaskID" id="BPMNShape_serviceTaskID">
+        <omgdc:Bounds height="60.0" width="100.0" x="225.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-DF0FA583-DF0F-46B5-ACB2-9C28E17054F7" id="BPMNShape_sid-DF0FA583-DF0F-46B5-ACB2-9C28E17054F7">
+        <omgdc:Bounds height="40.0" width="40.0" x="90.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-B4883664-C4D8-41D1-8D2B-E16DF26B2EFE" id="BPMNShape_sid-B4883664-C4D8-41D1-8D2B-E16DF26B2EFE">
+        <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_04469uh" id="BPMNEdge_SequenceFlow_04469uh">
+        <omgdi:waypoint x="564.95" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="615.0025321198765" y="89.26822082569018"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-D48C3863-93E2-4BC8-BF4C-541A55A48FD1" id="BPMNEdge_sid-D48C3863-93E2-4BC8-BF4C-541A55A48FD1">
+        <omgdi:waypoint x="324.95000000000005" y="123.91304347826089"></omgdi:waypoint>
+        <omgdi:waypoint x="376.85714285714283" y="96.83999999999999"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-2ECFAADD-8B13-4308-8EAF-6DC780929D62" id="BPMNEdge_sid-2ECFAADD-8B13-4308-8EAF-6DC780929D62">
+        <omgdi:waypoint x="409.51871474617246" y="90.42338709677419"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="90.20060240963855"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-74FCB971-7FCC-4458-82CE-2EBDB0AB4C89" id="BPMNEdge_sid-74FCB971-7FCC-4458-82CE-2EBDB0AB4C89">
+        <omgdi:waypoint x="120.0" y="80.02380952380952"></omgdi:waypoint>
+        <omgdi:waypoint x="155.07349857925723" y="41.432154299737746"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-74107ED7-BC1C-4677-98BC-863290C026FE" id="BPMNEdge_sid-74107ED7-BC1C-4677-98BC-863290C026FE">
+        <omgdi:waypoint x="324.95000000000005" y="56.060869565217416"></omgdi:waypoint>
+        <omgdi:waypoint x="376.8432324386065" y="83.14285714285714"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-F42C5949-C54D-4FDE-93EA-8BD6F41223E0" id="BPMNEdge_sid-F42C5949-C54D-4FDE-93EA-8BD6F41223E0">
+        <omgdi:waypoint x="181.94983571761932" y="30.42660626053817"></omgdi:waypoint>
+        <omgdi:waypoint x="224.9999999999999" y="30.229128440366974"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-EAB368C2-5976-4F96-A4AA-9EA62425F6D0" id="BPMNEdge_sid-EAB368C2-5976-4F96-A4AA-9EA62425F6D0">
+        <omgdi:waypoint x="44.94965881104672" y="90.0928554529216"></omgdi:waypoint>
+        <omgdi:waypoint x="90.375" y="90.375"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-88A18F7C-2D3D-4177-A69F-112E2FC14AE1" id="BPMNEdge_sid-88A18F7C-2D3D-4177-A69F-112E2FC14AE1">
+        <omgdi:waypoint x="124.41442436412315" y="95.53359375"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="131.91489361702128"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
