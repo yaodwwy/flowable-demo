@@ -6,11 +6,11 @@ import org.springframework.util.Base64Utils;
 
 class SequenceTest {
 
-    SequenceUtil sequence;
+    StringIdGenerator sequence;
 
     @BeforeEach
     void setUp() {
-        sequence = new SequenceUtil(0, 0);
+        sequence = new StringIdGenerator(0, 0);
     }
 
     @Test

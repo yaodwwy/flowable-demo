@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.sql.SQLException;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.example")
 public class RestDBServerApplication {
 
     @Bean(initMethod = "start", destroyMethod = "stop")

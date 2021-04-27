@@ -1,5 +1,7 @@
 package com.example.domain.utils;
 
+import org.flowable.common.engine.impl.cfg.IdGenerator;
+
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -17,7 +19,7 @@ import java.net.NetworkInterface;
  * 5位：机器标识，线程标识
  * 12位：序号标识（毫秒内的计数器）
  */
-public class SequenceUtil {
+public class StringIdGenerator implements IdGenerator {
 
     private static final long Epoch = 1539754886168L; // 起始时间戳，用于计算当前时间偏移量，选择离当前最近的时间，确定后不可更改
     private static final long WorkerIdBits = 5L; // 机器标识位数
@@ -42,7 +44,7 @@ public class SequenceUtil {
 //        this.workerId = getWorkerId(dataCenterId, MaxWorkerId);
 //    }
 
-    public SequenceUtil(long dataCenterId, long workerId) {
+    public StringIdGenerator(long dataCenterId, long workerId) {
 
         if (workerId > MaxWorkerId || workerId < 0)
             throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", MaxWorkerId));
@@ -156,5 +158,10 @@ public class SequenceUtil {
         }
 
         return id;
+    }
+
+    @Override
+    public String getNextId() {
+        return String.valueOf(this.nextId());
     }
 }

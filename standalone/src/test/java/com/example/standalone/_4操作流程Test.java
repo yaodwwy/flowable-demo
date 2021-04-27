@@ -6,8 +6,10 @@ import com.example.standalone.utils.Print;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.common.engine.api.FlowableException;
+import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.engine.task.Event;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
@@ -105,25 +107,19 @@ public class _4操作流程Test extends _0BaseTests {
     @SneakyThrows
     @Test
     public void 流程异常抛出() {
-        if (!flowable.isAsyncExecutorActivate()) {
-            log.error("未打开异步，不能测试！");
-            return;
-        }
 
-        SimpleDelegate simpleDelegate = new SimpleDelegate();
         ExceptionThrowDelegate exceptionThrowDelegate = new ExceptionThrowDelegate();
 
-        ProcessInstance processInstance = flowable.deployAndStart(
-                Map.of("exceptionThrowDelegate", exceptionThrowDelegate,
-                        "simpleDelegate", simpleDelegate),
-                "processes/_4流程操作.bpmn20.xml", "流程操作");
-        String processInstanceID = processInstance.getId();
-        Print.out(processInstance);
-        log.info("==================等5秒以上再关！等下会有异常处理类打印==================");
-        Thread.sleep(6_000);
-        // 查当前的子执行流（只有一个）
-        List<Execution> exe = flowable.listChildExecution(processInstance.getId());
-        exe.parallelStream().forEach(Print::out);
+        ProcessInstance pi = flowable.deployAndStart(
+                Map.of("exceptionThrowDelegate", exceptionThrowDelegate),
+                "processes/_4流程异常处理.bpmn20.xml", "流程异常处理");
+        String processInstanceID = pi.getId();
+        flowable.complete(pi);
+        List<Event> events = runtimeService.getProcessInstanceEvents(pi.getId());
+        events.parallelStream().forEach(Print::out);
+        List<HistoricProcessInstance> list = historyService.createHistoricProcessInstanceQuery().processInstanceId(pi.getId()).list();
+        list.parallelStream().forEach(Print::out);
+
     }
 
 }

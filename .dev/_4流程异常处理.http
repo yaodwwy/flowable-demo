@@ -1,0 +1,122 @@
+### 查定义
+GET {{server}}/repository/process-definitions?name=_4流程异常处理
+
+> {%
+client.test("流程定义", function() {
+  var total = response.body.total;
+  client.assert(total === 1, "流程不存在");
+});
+%}
+
+### 启动流程
+POST {{server}}/runtime/process-instances
+Content-Type: application/json
+
+{
+  "processDefinitionKey": "_4流程异常处理"
+}
+
+> {% client.global.set("pid", response.body.id);
+client.log(response.body.id)
+%}
+
+### 查询流程
+GET {{server}}/runtime/process-instances/{{pid}}
+
+> {%
+client.test("流程", function() {
+  client.log(client.global.get("pid"))
+  var id = response.body.id;
+  client.assert(id, "未查到");
+});
+%}
+
+### 查询任务
+POST {{server}}/query/tasks
+Content-Type: application/json
+
+{
+  "processInstanceId": "{{pid}}"
+}
+
+> {% client.global.set("task-id", response.body.data[0].id); %}
+
+### 完成任务
+POST {{server}}/runtime/tasks/{{task-id}}
+Content-Type: application/json
+
+{
+  "action": "complete",
+  "assignee": "用户1",
+  "outcome": "同意",
+  "variables": [
+    {
+      "name": "myVariable",
+      "type": "string",
+      "value": "exception",
+      "scope": "GLOBAL"
+    }
+  ]
+}
+
+### 等待几秒
+GET https://httpbin.org/ip
+Accept: application/json
+### 等待几秒
+GET https://httpbin.org/ip
+Accept: application/json
+### 等待几秒
+GET https://httpbin.org/ip
+Accept: application/json
+
+### 获取出现异常的死信 JOB
+GET {{server}}/management/deadletter-jobs?processInstanceId={{pid}}
+
+> {%
+client.test("死信中流程不存在", function() {
+  var total = response.body.total;
+  client.assert(total === 1, "流程不存在");
+  client.global.set("job-id", response.body.data[0].id);
+});
+%}
+
+### 设置变量 跳过异常
+PUT {{server}}/runtime/process-instances/{{pid}}/variables/myVariable
+Content-Type: application/json
+
+{
+  "name": "myVariable",
+  "type": "string",
+  "value": "ok"
+}
+
+### 触发移动 job 再次重试
+POST {{server}}/management/deadletter-jobs/{{job-id}}
+Content-Type: application/json
+
+{
+  "action": "move"
+}
+
+### 等待几秒
+GET https://httpbin.org/ip
+Accept: application/json
+
+### 查询流程 判断是否完成
+POST {{server}}/query/historic-process-instances
+Content-Type: application/json
+
+{
+  "processInstanceId": "{{pid}}",
+   "includeTaskLocalVariables": true,
+  "includeProcessVariables": true
+}
+
+> {%
+client.test("流程状态", function() {
+  var total = response.body.total;
+  var endTime = response.body.data[0].endTime;
+  client.assert(total===1, "未查到");
+  client.assert(endTime, "未完成");
+});
+%}

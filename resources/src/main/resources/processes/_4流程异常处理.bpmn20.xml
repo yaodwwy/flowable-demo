@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="_4流程异常处理" name="_4流程异常处理" isExecutable="true">
+    <startEvent id="start" flowable:formFieldValidation="true"></startEvent>
+    <userTask id="task" name="任务" flowable:assignee="$INITIATOR" flowable:formFieldValidation="true">
+      <extensionElements>
+        <modeler:activiti-idm-initiator xmlns:modeler="http://flowable.org/modeler"><![CDATA[true]]></modeler:activiti-idm-initiator>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="sid-3F040D27-5F12-4B19-A0E7-28879A797709" sourceRef="start" targetRef="task"></sequenceFlow>
+    <sequenceFlow id="sid-59559413-4F5A-413E-98B7-56E855CCFD03" sourceRef="task" targetRef="service"></sequenceFlow>
+    <endEvent id="sid-4CDB0C6D-9ADA-41E5-9076-87D0B601776E"></endEvent>
+    <sequenceFlow id="sid-5AE488C0-B85D-447D-A2A1-3593081CD18F" sourceRef="service" targetRef="sid-4CDB0C6D-9ADA-41E5-9076-87D0B601776E"></sequenceFlow>
+    <serviceTask id="service" name="服务"
+                 flowable:async="true"
+                 flowable:delegateExpression="${exceptionThrowDelegate}"></serviceTask>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__4流程异常处理">
+    <bpmndi:BPMNPlane bpmnElement="_4流程异常处理" id="BPMNPlane__4流程异常处理">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="30.0" y="55.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task" id="BPMNShape_task">
+        <omgdc:Bounds height="80.0" width="100.0" x="105.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-4CDB0C6D-9ADA-41E5-9076-87D0B601776E" id="BPMNShape_sid-4CDB0C6D-9ADA-41E5-9076-87D0B601776E">
+        <omgdc:Bounds height="28.0" width="28.0" x="395.0" y="56.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="service" id="BPMNShape_service">
+        <omgdc:Bounds height="80.0" width="100.0" x="250.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-59559413-4F5A-413E-98B7-56E855CCFD03" id="BPMNEdge_sid-59559413-4F5A-413E-98B7-56E855CCFD03">
+        <omgdi:waypoint x="204.94999999996367" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="70.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-5AE488C0-B85D-447D-A2A1-3593081CD18F" id="BPMNEdge_sid-5AE488C0-B85D-447D-A2A1-3593081CD18F">
+        <omgdi:waypoint x="349.95000000000005" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="395.0" y="70.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-3F040D27-5F12-4B19-A0E7-28879A797709" id="BPMNEdge_sid-3F040D27-5F12-4B19-A0E7-28879A797709">
+        <omgdi:waypoint x="59.9499984899576" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="105.0" y="70.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

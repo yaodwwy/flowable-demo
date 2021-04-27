@@ -16,19 +16,22 @@ public class ExceptionThrowDelegate implements JavaDelegate, Serializable {
 
     @Override
     public void execute(DelegateExecution execution) {
-        log.error("EventName: {} \n" +
-                        "ProcessDefinitionId: {} \n" +
+        log.warn("异常抛出代理类：" +
+                        ">>>>>> \n" +
+                        "ProcessDefinition: {} \n" +
                         "ProcessInstanceId: {} \n" +
+                        "ProcessInstanceBusinessKey: {} \n" +
                         "ProcessInstanceBusinessKey: {} \n",
-                execution.getEventName()
-                , execution.getProcessDefinitionId()
+                execution.getProcessDefinitionId()
                 , execution.getProcessInstanceId()
-                , execution.getProcessInstanceBusinessKey());
+                , execution.getProcessInstanceBusinessKey()
+                , execution.getRootProcessInstanceId());
 
         Map<String, Object> variables = execution.getVariables();
         log.warn("Variables: >>>>>> \n {}",
                 JSONUtil.toJsonStr(variables));
-
-        throw new FlowableException(">>> The Exception throw by JavaDelegate !!!");
+        if ("exception".equals(execution.getVariable("myVariable"))) {
+            throw new FlowableException(">>> The Exception throw by JavaDelegate !!!");
+        }
     }
 }

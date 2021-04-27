@@ -15,7 +15,7 @@ import java.util.Map;
 @Slf4j
 public class FlowableStandaloneConfig {
 
-    private final static String DATASOURCE_URL = "jdbc:h2:tcp://host.docker.internal:9091/mem:flowable;DB_CLOSE_DELAY=-1";
+    private final static String DATASOURCE_URL = "jdbc:h2:mem:flowable;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
     private final static String DATASOURCE_USERNAME = "flowable";
     private final static String DATASOURCE_PASSWORD = "flowable";
     private final static String DATASOURCE_DRIVER = "org.h2.Driver";

@@ -18,6 +18,8 @@ services:
       FLOWABLE_COMMON_APP_IDM-URL: http://host.docker.internal:8080/flowable-idm
       FLOWABLE_COMMON_APP_IDM-REDIRECT-URL: http://host.docker.internal:8080/flowable-idm
 
+###### swagger api 样例库 ######
+
   flowable-rest:
     image: flowable/flowable-rest
     container_name: flowable-rest
