@@ -15,10 +15,10 @@ import java.util.Map;
 @Slf4j
 public class FlowableStandaloneConfig {
 
-    private final static String DATASOURCE_URL = "jdbc:h2:mem:flowable;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
-    private final static String DATASOURCE_USERNAME = "flowable";
-    private final static String DATASOURCE_PASSWORD = "flowable";
-    private final static String DATASOURCE_DRIVER = "org.h2.Driver";
+    public final static String DATASOURCE_URL = "jdbc:h2:~/flowable-db/db;AUTO_SERVER=TRUE;AUTO_SERVER_PORT=9091;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
+    public final static String DATASOURCE_USERNAME = "flowable";
+    public final static String DATASOURCE_PASSWORD = "flowable";
+    public final static String DATASOURCE_DRIVER = "org.h2.Driver";
 
     private ProcessEngine processEngine;
 
@@ -34,21 +34,20 @@ public class FlowableStandaloneConfig {
                 .setJdbcDriver(DATASOURCE_DRIVER)
                 .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE)
                 .setAsyncExecutorActivate(true)
-                .setHistory(HistoryLevel.AUDIT.getKey())
                 .setCreateDiagramOnDeploy(true)
+                .setAsyncFailedJobWaitTime(1);//失败的1秒后重试
                 /**
                  * Mail配置
+                 .setMailServerHost("smtp.163.com")
+                 .setMailServerPort(25)
+                 .setMailServerDefaultFrom("abc@163.com")
+                 .setMailServerUsername("abc@163.com")
+                 .setMailServerPassword("123456")
+                // 事件侦听器
+                // cfg.setEventListeners(getEventListener());
+                // 类型事件侦听器
+                // cfg.setTypedEventListeners(getTypeEventListener());
                  */
-                .setMailServerHost("smtp.163.com")
-                .setMailServerPort(25)
-                .setMailServerDefaultFrom("abc@163.com")
-                .setMailServerUsername("abc@163.com")
-                .setMailServerPassword("123456");
-
-        // 事件侦听器
-        // cfg.setEventListeners(getEventListener());
-        // 类型事件侦听器
-        // cfg.setTypedEventListeners(getTypeEventListener());
 
         ProcessEngine processEngine = cfg.buildProcessEngine();
         String pName = processEngine.getName();

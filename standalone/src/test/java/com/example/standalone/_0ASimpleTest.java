@@ -11,27 +11,15 @@ import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.DeploymentBuilder;
 import org.junit.jupiter.api.Test;
 
+import static com.example.standalone.FlowableStandaloneConfig.*;
+
 @Slf4j
 public class _0ASimpleTest {
 
-    private final static String DATASOURCE_URL = "jdbc:h2:~/flowable-db/db;AUTO_SERVER=TRUE;AUTO_SERVER_PORT=9091;DB_CLOSE_DELAY=-1";
-    private final static String DATASOURCE_USERNAME = "flowable";
-    private final static String DATASOURCE_PASSWORD = "flowable";
-    private final static String DATASOURCE_DRIVER = "org.h2.Driver";
-
     @Test
     void firstTest() {
-        ProcessEngineConfiguration cfg = new StandaloneProcessEngineConfiguration()
-                .setJdbcUrl(DATASOURCE_URL)
-                .setJdbcUsername(DATASOURCE_USERNAME)
-                .setJdbcPassword(DATASOURCE_PASSWORD)
-                .setJdbcDriver(DATASOURCE_DRIVER)
-                .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE)
-                .setAsyncExecutorActivate(true)
-                .setHistory(HistoryLevel.AUDIT.getKey())
-                .setCreateDiagramOnDeploy(true);
 
-        ProcessEngine processEngine = cfg.buildProcessEngine();
+        ProcessEngine processEngine = FlowableStandaloneConfig.processEngine();
         RepositoryService repositoryService = processEngine.getRepositoryService();
 
         DeploymentBuilder deployment = repositoryService.createDeployment();

@@ -1,5 +1,6 @@
 package com.example.standalone;
 
+import cn.hutool.json.JSONObject;
 import com.example.domain.delegate.ExceptionThrowDelegate;
 import com.example.domain.delegate.SimpleDelegate;
 import com.example.standalone.utils.Print;
@@ -10,6 +11,8 @@ import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.task.Event;
+import org.flowable.job.api.Job;
+import org.flowable.variable.api.delegate.VariableScope;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
@@ -102,24 +105,4 @@ public class _4操作流程Test extends _0BaseTests {
         // 再激活
         flowable.activateProcessInstanceById(processInstanceID);
     }
-
-
-    @SneakyThrows
-    @Test
-    public void 流程异常抛出() {
-
-        ExceptionThrowDelegate exceptionThrowDelegate = new ExceptionThrowDelegate();
-
-        ProcessInstance pi = flowable.deployAndStart(
-                Map.of("exceptionThrowDelegate", exceptionThrowDelegate),
-                "processes/_4流程异常处理.bpmn20.xml", "流程异常处理");
-        String processInstanceID = pi.getId();
-        flowable.complete(pi);
-        List<Event> events = runtimeService.getProcessInstanceEvents(pi.getId());
-        events.parallelStream().forEach(Print::out);
-        List<HistoricProcessInstance> list = historyService.createHistoricProcessInstanceQuery().processInstanceId(pi.getId()).list();
-        list.parallelStream().forEach(Print::out);
-
-    }
-
 }

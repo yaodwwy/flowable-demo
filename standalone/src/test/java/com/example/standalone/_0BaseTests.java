@@ -4,15 +4,13 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.engine.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 @Slf4j
 @Data
 public class _0BaseTests {
 
     FlowableUtils flowable;
+    ProcessEngineConfiguration processEngineConfiguration;
     IdentityService identityService;
     RuntimeService runtimeService;
     TaskService taskService;
@@ -27,9 +25,10 @@ public class _0BaseTests {
         this.runtimeService = processEngine.getRuntimeService();
         this.taskService = processEngine.getTaskService();
         this.formService = processEngine.getFormService();
-        this.formService = processEngine.getFormService();
+        this.historyService = processEngine.getHistoryService();
         this.repositoryService = processEngine.getRepositoryService();
         this.managementService = processEngine.getManagementService();
+        this.processEngineConfiguration = processEngine.getProcessEngineConfiguration();
         this.flowable = new FlowableUtils(processEngine, repositoryService, runtimeService, taskService, managementService);
     }
 
