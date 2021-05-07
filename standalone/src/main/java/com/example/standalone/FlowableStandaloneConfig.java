@@ -3,7 +3,6 @@ package com.example.standalone;
 import com.example.domain.listener.DefaultFlowableEventListener;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.common.engine.api.delegate.event.FlowableEventListener;
-import org.flowable.common.engine.impl.history.HistoryLevel;
 import org.flowable.engine.*;
 import org.flowable.engine.impl.cfg.StandaloneProcessEngineConfiguration;
 
@@ -36,19 +35,19 @@ public class FlowableStandaloneConfig {
                 .setAsyncExecutorActivate(true)
                 .setCreateDiagramOnDeploy(true)
                 .setAsyncFailedJobWaitTime(1);//失败的1秒后重试
-                /**
-                 * Mail配置
-                 .setMailServerHost("smtp.163.com")
-                 .setMailServerPort(25)
-                 .setMailServerDefaultFrom("abc@163.com")
-                 .setMailServerUsername("abc@163.com")
-                 .setMailServerPassword("123456")
-                // 事件侦听器
-                // cfg.setEventListeners(getEventListener());
-                // 类型事件侦听器
-                // cfg.setTypedEventListeners(getTypeEventListener());
-                 */
-
+        /**
+         * Mail配置
+         .setMailServerHost("smtp.163.com")
+         .setMailServerPort(25)
+         .setMailServerDefaultFrom("abc@163.com")
+         .setMailServerUsername("abc@163.com")
+         .setMailServerPassword("123456")
+         // 事件侦听器
+         // cfg.setEventListeners(getEventListener());
+         // 类型事件侦听器
+         // cfg.setTypedEventListeners(getTypeEventListener());
+         */
+        cfg.setFallbackToDefaultTenant(true);
         ProcessEngine processEngine = cfg.buildProcessEngine();
         String pName = processEngine.getName();
         String ver = ProcessEngine.VERSION;

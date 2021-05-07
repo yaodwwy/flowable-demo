@@ -52,19 +52,30 @@ public class FlowableUtils {
         this.managementService = managementService;
     }
 
+    public ProcessDefinition deploy(String file, String name) {
+        return this.deploy(file, name, null);
+    }
+
+    public ProcessDefinition deploy(String file, String name, String tenantId) {
+
+        return this.deploy(file, name, null, tenantId);
+    }
+
     /**
      * 部署流程
      *
      * @param file
      * @return
      */
-    public ProcessDefinition deploy(String file, String name) {
+    public ProcessDefinition deploy(String file, String name, String key, String tenantId) {
         if (StringUtils.isAnyBlank(file)) {
             throw new FlowableException("文件不能为空！");
         }
         DeploymentBuilder builder = repositoryService.createDeployment();
         builder.addClasspathResource(file);
         builder.name(name);
+        builder.key(key);
+        builder.tenantId(tenantId);
         // 关闭语法错误检查 ( DTD格式检查 )
         // builder.disableSchemaValidation();
         // 关闭流程错误验证 ( 流程图画的不对 如 流程冲突 )
@@ -88,15 +99,19 @@ public class FlowableUtils {
         return deployment.deploy();
     }
 
+    public ProcessInstance deployAndStart(Map<String, Object> param, String bpmn20Xml, String name) {
+        return this.deployAndStart(param, bpmn20Xml, name, null);
+    }
+
     /**
      * 部署并启动一个流程
      *
      * @param bpmn20Xml
      * @return
      */
-    public ProcessInstance deployAndStart(Map<String, Object> param, String bpmn20Xml, String name) {
+    public ProcessInstance deployAndStart(Map<String, Object> param, String bpmn20Xml, String name, String tenantId) {
 
-        ProcessDefinition pd = this.deploy(bpmn20Xml, name);
+        ProcessDefinition pd = this.deploy(bpmn20Xml, name, tenantId);
         // 启动流程
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(pd.getId(), pd.getKey(), param);
         log.info("流程实例[{}] BusinessKey[{}] 已启动 ...", processInstance, processInstance.getBusinessKey());
@@ -106,11 +121,15 @@ public class FlowableUtils {
     }
 
     public ProcessInstance deployAndStart(String bpmn20Xml, String name) {
-        return this.deployAndStart(null, bpmn20Xml, name);
+        return this.deployAndStart(null, bpmn20Xml, name, null);
+    }
+
+    public ProcessInstance deployAndStart(String bpmn20Xml, String name, String tenantId) {
+        return this.deployAndStart(null, bpmn20Xml, name, tenantId);
     }
 
     public ProcessInstance deployAndStart(String bpmn20Xml) {
-        return this.deployAndStart(null, bpmn20Xml, bpmn20Xml);
+        return this.deployAndStart(null, bpmn20Xml, bpmn20Xml, null);
     }
 
 

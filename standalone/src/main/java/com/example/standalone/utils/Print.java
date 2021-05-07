@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.task.Event;
@@ -36,7 +37,19 @@ public final class Print {
 
     public static void out(ProcessInstance pi) {
         log.info("=============== 流程实例 ==============");
-        log.info("{}",JSONUtil.toJsonPrettyStr(pi));
+        String prettyStr = null;
+        try {
+            prettyStr = JSONUtil.toJsonPrettyStr(pi);
+        } catch (Exception e) {
+            prettyStr = "TenantId: " + pi.getTenantId();
+            log.warn(e.getMessage());
+        }
+        log.info("{}", prettyStr);
+    }
+
+    public static void out(ProcessDefinition pd) {
+        log.info("=============== 流程定义 ==============");
+        log.info("{}",JSONUtil.toJsonPrettyStr(pd));
     }
 
     @SneakyThrows
